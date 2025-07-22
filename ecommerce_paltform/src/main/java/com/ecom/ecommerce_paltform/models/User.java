@@ -23,6 +23,7 @@ public class User {
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private String password;
 
     @Email
