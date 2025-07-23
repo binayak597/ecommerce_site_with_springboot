@@ -1,6 +1,7 @@
 package com.ecom.ecommerce_paltform.impls;
 
 import com.ecom.ecommerce_paltform.config.JwtProvider;
+import com.ecom.ecommerce_paltform.exception.SellerException;
 import com.ecom.ecommerce_paltform.helpers.AccountStatus;
 import com.ecom.ecommerce_paltform.helpers.USER_ROLE;
 import com.ecom.ecommerce_paltform.models.Address;
@@ -60,9 +61,9 @@ public class SellerServiceImpls implements SellerService {
     }
 
     @Override
-    public Seller getSellerById(Long id) throws Exception {
+    public Seller getSellerById(Long id) throws SellerException {
 
-        return sellerRepository.findById(id).orElseThrow(() -> new Exception("seller not found with id "+ id));
+        return sellerRepository.findById(id).orElseThrow(() -> new SellerException("seller not found with id "+ id));
 
     }
 

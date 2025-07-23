@@ -1,6 +1,7 @@
 package com.ecom.ecommerce_paltform.controllers;
 
 import com.ecom.ecommerce_paltform.config.JwtProvider;
+import com.ecom.ecommerce_paltform.exception.SellerException;
 import com.ecom.ecommerce_paltform.helpers.AccountStatus;
 import com.ecom.ecommerce_paltform.models.Seller;
 import com.ecom.ecommerce_paltform.models.VerificationCode;
@@ -86,7 +87,7 @@ public class SellerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws SellerException {
 
         Seller seller = sellerService.getSellerById(id);
 
