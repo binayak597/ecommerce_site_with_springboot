@@ -2,12 +2,8 @@ package com.ecom.ecommerce_paltform.controllers;
 
 
 import com.ecom.ecommerce_paltform.helpers.USER_ROLE;
-import com.ecom.ecommerce_paltform.models.VerificationCode;
 import com.ecom.ecommerce_paltform.repositories.UserRepository;
-import com.ecom.ecommerce_paltform.response.ApiResponse;
-import com.ecom.ecommerce_paltform.response.AuthResponse;
-import com.ecom.ecommerce_paltform.response.LoginRequest;
-import com.ecom.ecommerce_paltform.response.SignupRequest;
+import com.ecom.ecommerce_paltform.response.*;
 import com.ecom.ecommerce_paltform.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +22,10 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sent/login-signup-otp")
-    public ResponseEntity<ApiResponse> loginOtpHandler(@RequestBody VerificationCode req) throws Exception{
+    public ResponseEntity<ApiResponse> loginOtpHandler(@RequestBody LoginOtpRequest req) throws Exception{
 
 
-        authService.sentLoginOtp(req.getEmail());
+        authService.sentLoginOtp(req.getEmail(), req.getRole());
 
         ApiResponse res = new ApiResponse();
 

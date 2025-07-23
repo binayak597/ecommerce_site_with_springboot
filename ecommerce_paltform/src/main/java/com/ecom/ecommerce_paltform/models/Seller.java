@@ -2,6 +2,8 @@ package com.ecom.ecommerce_paltform.models;
 
 import com.ecom.ecommerce_paltform.helpers.AccountStatus;
 import com.ecom.ecommerce_paltform.helpers.USER_ROLE;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +26,8 @@ public class Seller {
 
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private String password;
 
     @Embedded

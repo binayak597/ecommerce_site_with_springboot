@@ -3,9 +3,11 @@ package com.ecom.ecommerce_paltform.impls;
 import com.ecom.ecommerce_paltform.config.JwtProvider;
 import com.ecom.ecommerce_paltform.helpers.USER_ROLE;
 import com.ecom.ecommerce_paltform.models.Cart;
+import com.ecom.ecommerce_paltform.models.Seller;
 import com.ecom.ecommerce_paltform.models.User;
 import com.ecom.ecommerce_paltform.models.VerificationCode;
 import com.ecom.ecommerce_paltform.repositories.CartRepository;
+import com.ecom.ecommerce_paltform.repositories.SellerRepository;
 import com.ecom.ecommerce_paltform.repositories.UserRepository;
 import com.ecom.ecommerce_paltform.repositories.VerificationCodeRepository;
 import com.ecom.ecommerce_paltform.response.AuthResponse;
@@ -42,21 +44,35 @@ public class AuthServiceImpls implements AuthService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final CustomUserServiceImpls customUserServiceImpls;
+    private final SellerRepository sellerRepository;
 
     @Override
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
 
         String SIGNIN_PREFIX="signin_";
 
         if(email.startsWith(SIGNIN_PREFIX)){
 
             email = email.substring(SIGNIN_PREFIX.length());
-            User user = userRepository.findByEmail(email);
 
-            if(user == null){
+            if(role.equals(USER_ROLE.ROLE_SELLER)){
 
-                throw new Exception("user not exist with provided email");
+                Seller seller = sellerRepository.findByEmail(email);
+
+                if(seller == null){
+
+                    throw new Exception("seller not found");
+                }
+            }else{
+
+                User user = userRepository.findByEmail(email);
+
+                if(user == null){
+
+                    throw new Exception("user not exist with provided email");
+                }
             }
+
         }
 
         VerificationCode isExist = verificationCodeRepository.findByEmail(email);
@@ -151,6 +167,13 @@ public class AuthServiceImpls implements AuthService {
     private Authentication authenticate(String username, String otp) {
 
         UserDetails userDetails =  customUserServiceImpls.loadUserByUsername(username);
+
+        String SELLER_PREFIX="seller_";
+
+        if(username.startsWith(SELLER_PREFIX)){
+
+            username = username.substring(SELLER_PREFIX.length());
+        }
 
         if(userDetails == null){
 
